@@ -7,7 +7,7 @@ function navigateTo(view) {
     render(); 
 }
 
-
+// ================== PÁGINAS PRINCIPAIS ==================
 
 function HomePage() {
     return `
@@ -44,7 +44,7 @@ function CandidatoDashboard() {
 }
 
 function EmpresaDashboard() {
-     return `
+    return `
         <div class="text-center w-full">
             <h2 class="text-3xl font-bold text-gray-900 mb-8">Área da Empresa</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -72,6 +72,100 @@ function AdminDashboard() {
     `;
 }
 
+// ================== FUNCIONALIDADES ==================
+
+function CandidatoProfile() {
+    return `
+        <div class="max-w-2xl w-full">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Gerenciar Perfil</h2>
+            <form id="profile-form" class="space-y-4">
+                <div>
+                    <label class="block text-left font-semibold">Nome</label>
+                    <input type="text" name="nome" placeholder="Seu nome completo"
+                        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"/>
+                </div>
+                <div>
+                    <label class="block text-left font-semibold">Idade</label>
+                    <input type="number" name="idade" placeholder="Sua idade"
+                        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"/>
+                </div>
+                <div>
+                    <label class="block text-left font-semibold">Email</label>
+                    <input type="email" name="email" placeholder="Seu email"
+                        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"/>
+                </div>
+                <div>
+                    <label class="block text-left font-semibold">Resumo</label>
+                    <textarea name="resumo" rows="4" placeholder="Fale um pouco sobre você"
+                        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition">
+                    Salvar Perfil
+                </button>
+            </form>
+            <div id="profile-result" class="mt-6 text-center text-green-600 font-semibold hidden"></div>
+        </div>
+    `;
+}
+
+function PostJob() {
+    return `
+        <div class="max-w-2xl w-full">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Publicar Vaga</h2>
+            <form id="job-form" class="space-y-4">
+                <div>
+                    <label class="block text-left font-semibold">Título da Vaga</label>
+                    <input type="text" name="titulo" placeholder="Ex: Assistente Administrativo"
+                        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500"/>
+                </div>
+                <div>
+                    <label class="block text-left font-semibold">Descrição</label>
+                    <textarea name="descricao" rows="4" placeholder="Detalhes da vaga"
+                        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-left font-semibold">Salário</label>
+                    <input type="text" name="salario" placeholder="Ex: R$ 1.500,00"
+                        class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500"/>
+                </div>
+                <button type="submit"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition">
+                    Publicar Vaga
+                </button>
+            </form>
+            <div id="job-result" class="mt-6 text-center text-green-600 font-semibold hidden"></div>
+        </div>
+    `;
+}
+
+function ViewCandidates() {
+    let candidatos = [];
+    const perfil = JSON.parse(localStorage.getItem("candidatoPerfil"));
+    if (perfil) candidatos.push(perfil);
+
+    if (candidatos.length === 0) {
+        return `<p class="text-center text-gray-600">Nenhum candidato cadastrado ainda.</p>`;
+    }
+
+    return `
+        <div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Candidatos</h2>
+            <div class="space-y-4">
+                ${candidatos.map(c => `
+                    <div class="border p-4 rounded-lg shadow-sm bg-gray-50">
+                        <h3 class="font-bold text-xl">${c.nome}</h3>
+                        <p>📧 ${c.email}</p>
+                        <p>🎂 ${c.idade} anos</p>
+                        <p class="mt-2 text-gray-700">${c.resumo}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+// ================== COMPONENTES ==================
 
 function UnderConstruction(title) {
     return `
@@ -92,6 +186,9 @@ function DashboardCard({ icon, title, description, view }) {
         </button>
     `;
 }
+
+// ================== RENDER ==================
+
 function render() {
     let content = '';
     switch (currentView) {
@@ -107,12 +204,45 @@ function render() {
         case 'admin-dashboard':
             content = AdminDashboard();
             break;
+        case 'candidato-profile':
+            content = CandidatoProfile();
+            break;
+        case 'post-job':
+            content = PostJob();
+            break;
+        case 'view-candidates':
+            content = ViewCandidates();
+            break;
         default:
             content = UnderConstruction('Página não encontrada');
     }
     
     appContainer.innerHTML = content;
-    
     lucide.createIcons();
 }
+
 document.addEventListener('DOMContentLoaded', render);
+
+// ================== EVENTOS ==================
+
+document.addEventListener('submit', function(e) {
+    // Perfil do candidato
+    if (e.target && e.target.id === 'profile-form') {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(e.target).entries());
+        localStorage.setItem("candidatoPerfil", JSON.stringify(data));
+        document.getElementById('profile-result').innerText = "Perfil salvo com sucesso!";
+        document.getElementById('profile-result').classList.remove("hidden");
+    }
+
+    // Publicar vaga
+    if (e.target && e.target.id === 'job-form') {
+        e.preventDefault();
+        const job = Object.fromEntries(new FormData(e.target).entries());
+        let jobs = JSON.parse(localStorage.getItem("vagas")) || [];
+        jobs.push(job);
+        localStorage.setItem("vagas", JSON.stringify(jobs));
+        document.getElementById('job-result').innerText = "Vaga publicada com sucesso!";
+        document.getElementById('job-result').classList.remove("hidden");
+    }
+});
