@@ -15,17 +15,25 @@
 
     <div class="min-h-screen flex flex-col">
         <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg p-4 flex items-center justify-between flex-wrap">
-            <div class="flex items-center">
-                <img src="https://placehold.co/32x32/2563EB/ffffff?text=Logo" alt="Logo PrimeiroEmprego" class="h-8 mr-2 rounded-md" />
-                <h1 class="text-3xl font-bold rounded-lg p-2">PrimeiroEmprego</h1>
-            </div>
-            <nav class="flex items-center space-x-6 mt-4 md:mt-0">
-                <button onclick="navigateTo('home')" class="flex items-center space-x-2 p-2 rounded-md hover:bg-blue-700 transition-colors"><i data-lucide="home" class="w-5 h-5"></i> <span>Início</span></button>
-                <button onclick="navigateTo('candidato-dashboard')" class="flex items-center space-x-2 p-2 rounded-md hover:bg-blue-700 transition-colors"><i data-lucide="user" class="w-5 h-5"></i> <span>Candidato</span></button>
-                <button onclick="navigateTo('empresa-dashboard')" class="flex items-center space-x-2 p-2 rounded-md hover:bg-blue-700 transition-colors"><i data-lucide="building" class="w-5 h-5"></i> <span>Empresa</span></button>
-                <button onclick="navigateTo('admin-dashboard')" class="flex items-center space-x-2 p-2 rounded-md hover:bg-blue-700 transition-colors"><i data-lucide="settings" class="w-5 h-5"></i> <span>Admin</span></button>
-            </nav>
-        </header>
+    <div class="flex items-center">
+        <h1 class="text-3xl font-bold rounded-lg p-2">PrimeiroEmprego</h1>
+    </div>
+    <nav class="flex items-center space-x-6 mt-4 md:mt-0">
+        <button onclick="navigate('home')" class="flex items-center space-x-2 p-2 rounded-md hover:bg-blue-700 transition-colors">
+            <i data-lucide="home" class="w-5 h-5"></i> <span>Início</span>
+        </button>
+        <button onclick="navigate('candidato-dashboard')" class="flex items-center space-x-2 p-2 rounded-md hover:bg-blue-700 transition-colors">
+            <i data-lucide="user" class="w-5 h-5"></i> <span>Candidato</span>
+        </button>
+        <button onclick="navigate('empresa-dashboard')" class="flex items-center space-x-2 p-2 rounded-md hover:bg-blue-700 transition-colors">
+            <i data-lucide="building" class="w-5 h-5"></i> <span>Empresa</span>
+        </button>
+        <button onclick="navigate('admin-dashboard')" class="flex items-center space-x-2 p-2 rounded-md hover:bg-blue-700 transition-colors">
+            <i data-lucide="settings" class="w-5 h-5"></i> <span>Admin</span>
+        </button>
+    </nav>
+</header>
+
 
         <main class="flex-grow p-6 flex items-center justify-center">
             <div id="app-container" class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-4xl min-h-[500px] flex flex-col items-center justify-center">
